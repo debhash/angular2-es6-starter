@@ -1,12 +1,14 @@
 import './shim';
-import 'rxjs/Rx';
+import 'rxjs/add/operator/map';
 import { bootstrap } from 'angular2/platform/browser';
 import { enableProdMode, provide } from 'angular2/core';
-import { AppComponent } from './app/app';
+import { TRANSLATE_PROVIDERS } from 'ng2-translate/ng2-translate';
+import { AppComponent } from './app/core/components/app/app';
 import { ROUTER_PROVIDERS, LocationStrategy, HashLocationStrategy } from 'angular2/router';
 import { HTTP_PROVIDERS } from 'angular2/http';
-import { PostService } from './app/services/post';
-import { UserService } from './app/services/user';
+import { AUTH_PROVIDERS } from './app/auth';
+import { POSTS_PROVIDERS } from './app/posts';
+import { environment } from './app/core';
 
 if (ENVIRONMENT === 'production') {
   enableProdMode();
@@ -15,6 +17,9 @@ if (ENVIRONMENT === 'production') {
 bootstrap(AppComponent, [
   HTTP_PROVIDERS,
   ROUTER_PROVIDERS,
+  TRANSLATE_PROVIDERS,
+  AUTH_PROVIDERS,
+  POSTS_PROVIDERS,
   provide(LocationStrategy, { useClass: HashLocationStrategy }),
-  PostService, UserService
+  provide(environment, { useValue: ENVIRONMENT })
 ]);
